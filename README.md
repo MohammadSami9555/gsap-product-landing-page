@@ -26,7 +26,7 @@ A modern product landing page built with **React + Vite + GSAP** featuring smoot
 - JavaScript ES6+
 - CSS / Inline styles
 
----
+
 
 ## 🔴 Live Demo
 
@@ -50,13 +50,13 @@ npm install
 # start project
 npm run dev
 
-Project will run on:
+**Project will run on:**
 
 http://localhost:5173
 
 
-🎥 Animations Included
-----
+🎥** Animations Included**
+
 Hero fade-in animation
 
 Section reveal on scroll
@@ -69,8 +69,8 @@ Parallax effect
 
 
 
-📚 Learning Outcomes
-----
+📚** Learning Outcomes**
+
 While building this project I learned:
 
 How GSAP works with React
@@ -86,8 +86,8 @@ Creating multi-section landing pages
 Improving UX using micro-animations
 
 
-🚀 Future Improvements
-----
+🚀** Future Improvements**
+
 ⬜ Add real product gallery
 ⬜ Add contact form
 ⬜ Add responsive hamburger menu
