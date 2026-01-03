@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -10,187 +10,207 @@ function App() {
   const paraRef = useRef(null);
   const buttonRef = useRef(null);
 
-  const goToFeatures = () =>
-    document.getElementById("features").scrollIntoView({ behavior: "smooth" });
+  const [active, setActive] = useState("home");
 
-  const goToGallery = () =>
-    document.getElementById("gallery").scrollIntoView({ behavior: "smooth" });
-
-  const goToLast = () =>
-    document.getElementById("last").scrollIntoView({ behavior: "smooth" });
+  const goTo = (id) =>
+    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
 
   useEffect(() => {
-    // 1️⃣ Reduced motion support
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (prefersReduced.matches) return;
 
-    // 2️⃣ Hero intro animation
-    gsap.from([headingRef.current, paraRef.current, buttonRef.current], {
-      opacity: 0,
-      y: 40,
-      duration: 1,
-      stagger: 0.2,
-      ease: "power3.out"
-    });
+    // hero animation
+    gsap.fromTo(
+      [headingRef.current, paraRef.current, buttonRef.current],
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 1, stagger: 0.2 }
+    );
 
-    // 3️⃣ Section scroll reveal animations
-    gsap.utils.toArray(["#features", "#gallery", "#last"]).forEach((sec) => {
-      gsap.from(sec, {
-        scrollTrigger: {
-          trigger: sec,
-          start: "top 85%"
-        },
+    // section reveal
+    ["features", "gallery", "last"].forEach((sec) => {
+      gsap.from(`#${sec}`, {
+        scrollTrigger: { trigger: `#${sec}`, start: "top 85%" },
         opacity: 0,
-        y: 120,
-        duration: 1
+        y: 80,
+        duration: 1,
       });
     });
 
-    // 4️⃣ Parallax bg animation
-    gsap.to(".parallax-bg", {
-      scrollTrigger: {
-        trigger: ".parallax-bg",
-        start: "top bottom",
-        scrub: true
-      },
-      backgroundPosition: "50% 25%"
+    // Scroll active navbar
+    ["features", "gallery", "last"].forEach((id) => {
+      ScrollTrigger.create({
+        trigger: `#${id}`,
+        start: "top center",
+        onEnter: () => setActive(id),
+        onEnterBack: () => setActive(id),
+      });
     });
 
-    // 5️⃣ cleanup (important)
-    return () => {
-      gsap.killTweensOf("*");
-      ScrollTrigger.kill();
-    };
   }, []);
 
-  // 🔥 Stylish button shared style
-  const btnStyle = {
-    padding: "12px 26px",
+  const btn = {
+    padding: "10px 22px",
     borderRadius: "999px",
-    fontSize: "16px",
-    fontWeight: 700,
-    border: "1px solid rgba(255,255,255,0.3)",
-    background:
-      "linear-gradient(135deg, rgba(34,197,94,1), rgba(34,197,94,0.6))",
-    color: "black",
-    boxShadow: "0 10px 25px rgba(0,0,0,.35)",
-    backdropFilter: "blur(6px)",
+    fontWeight: 600,
+    border: "none",
     cursor: "pointer",
-    transition: "all .25s ease"
+    background: "linear-gradient(135deg,#22c55e,#16a34a)",
+    color: "black",
   };
 
   return (
     <>
-      {/* HERO SECTION */}
-      <div
-        className="parallax-bg"
+
+      {/* NAVBAR */}
+      <nav
         style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "64px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0 28px",
+          background: "rgba(0,0,0,0.55)",
+          backdropFilter: "blur(10px)",
+          color: "white",
+          zIndex: 999,
+        }}
+      >
+        <h3>GSAP Landing</h3>
+
+        <div style={{ display: "flex", gap: "18px" }}>
+          {["features", "gallery", "last"].map((x) => (
+            <button
+              key={x}
+              onClick={() => goTo(x)}
+              style={{
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+                fontWeight: 700,
+                color: active === x ? "#22c55e" : "white",
+              }}
+            >
+              {x.toUpperCase()}
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      {/* HERO */}
+      <section
+        id="home"
+        style={{
+          paddingTop: "80px",
           height: "100vh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          gap: "15px",
+          gap: "10px",
           backgroundImage: "url('https://picsum.photos/1200/800')",
           backgroundSize: "cover",
-          backgroundAttachment: "fixed",
           color: "white",
-          position: "relative"
         }}
       >
-        {/* dark overlay for text clarity */}
-        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,.55)" }} />
+        <h1 ref={headingRef}>GSAP Product Landing Page</h1>
+        <p ref={paraRef}>Amazing animations powered by GSAP 🚀</p>
 
-        <h1 ref={headingRef} style={{ zIndex: 1, fontSize: "46px", fontWeight: 800 }}>
-          GSAP Product Landing Page
-        </h1>
-
-        <p ref={paraRef} style={{ zIndex: 1 }}>
-          Amazing animations powered by GSAP
-        </p>
-
-        <button
-          ref={buttonRef}
-          onClick={goToFeatures}
-          style={btnStyle}
-          onMouseEnter={(e) => (e.target.style.transform = "scale(1.08)")}
-          onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
-          onMouseDown={(e) => (e.target.style.transform = "scale(0.95)")}
-          onMouseUp={(e) => (e.target.style.transform = "scale(1.08)")}
-        >
-          Get Started 🚀
+        <button ref={buttonRef} style={btn} onClick={() => goTo("features")}>
+          Get Started
         </button>
-      </div>
+      </section>
 
       {/* FEATURES */}
-      <div
+      <section
         id="features"
         style={{
           height: "100vh",
           background: "#020617",
           color: "white",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "15px"
+          textAlign: "center",
+          paddingTop: "80px",
         }}
       >
-        <h2>⭐ Features Page</h2>
+        <h2>✨ Powerful Features</h2>
 
-        <button
-          onClick={goToGallery}
-          style={btnStyle}
-          onMouseEnter={(e) => (e.target.style.transform = "scale(1.08)")}
-          onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "30px",
+            marginTop: "40px",
+          }}
         >
+          {["Smooth Animations", "Scroll Trigger", "Parallax Effects"].map(
+            (text, i) => (
+              <div
+                key={i}
+                style={{
+                  padding: "20px 30px",
+                  borderRadius: "18px",
+                  background: "rgba(255,255,255,0.08)",
+                  backdropFilter: "blur(8px)",
+                  cursor: "pointer",
+                  transition: "all .25s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = "scale(1.1)";
+                  e.target.style.background = "rgba(34,197,94,0.3)";
+                  e.target.style.boxShadow =
+                    "0 20px 40px rgba(0,0,0,0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = "scale(1)";
+                  e.target.style.background = "rgba(255,255,255,0.08)";
+                  e.target.style.boxShadow = "none";
+                }}
+              >
+                {text}
+              </div>
+            )
+          )}
+        </div>
+
+        <br />
+        <button style={btn} onClick={() => goTo("gallery")}>
           Next →
         </button>
-      </div>
+      </section>
 
       {/* GALLERY */}
-      <div
+      <section
         id="gallery"
         style={{
-          minHeight: "100vh",
+          height: "100vh",
           background: "#020617",
           color: "white",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "20px"
+          textAlign: "center",
+          paddingTop: "80px",
         }}
       >
-        <h2>🖼️ Gallery Page</h2>
+        <h2>🖼️ Gallery</h2>
 
-        <button
-          onClick={goToLast}
-          style={btnStyle}
-          onMouseEnter={(e) => (e.target.style.transform = "scale(1.08)")}
-          onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
-        >
+        <button style={btn} onClick={() => goTo("last")}>
           Next →
         </button>
-      </div>
+      </section>
 
       {/* LAST */}
-      <div
+      <section
         id="last"
         style={{
           height: "100vh",
           background: "#020617",
           color: "white",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "15px"
+          textAlign: "center",
+          paddingTop: "80px",
         }}
       >
         <h2>🎉 Last Page Reached</h2>
-        <p>Thank You – project complete 🚀</p>
-      </div>
+        <p>Thank you 🚀</p>
+      </section>
     </>
   );
 }
