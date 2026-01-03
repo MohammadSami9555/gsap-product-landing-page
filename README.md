@@ -1,63 +1,95 @@
-# GSAP Product Landing Page
+# 🚀 GSAP Product Landing Page
 
-A modern animated product landing page built with **React + Vite + GSAP**.  
-Includes scroll-triggered animations, parallax effects, smooth navigation buttons, and reduced-motion accessibility support.
-
----
-
-## 🚀 Features
-
-- Hero intro animation
-- Scroll-trigger section reveals
-- Parallax background effect
-- Stylish animated buttons
-- Section-to-section smooth scroll
-- Get Started & Next navigation buttons
-- GSAP + ScrollTrigger integration
-- Reduced-motion accessibility support
-- Animation cleanup for performance
+A modern product landing page built with **React + Vite + GSAP** featuring smooth animations, scroll-triggered effects, parallax backgrounds and a clean glass-morphism UI.
 
 ---
 
-## 🛠 Tech Stack
+## ✨ Features
 
-- React
-- Vite
-- JavaScript
+✔️ Hero intro animation  
+✔️ Smooth GSAP transitions  
+✔️ ScrollTrigger based section reveal  
+✔️ Parallax background effect  
+✔️ Animated feature cards  
+✔️ Sticky navigation bar  
+✔️ Active link highlight on scroll  
+✔️ Section navigation buttons  
+✔️ Clean responsive layout  
+
+---
+
+## 🛠️ Tech Stack
+
+- React (Vite)
 - GSAP
 - ScrollTrigger plugin
+- JavaScript ES6+
+- CSS / Inline styles
 
 ---
 
-## 📸 What this project contains
+## 🔴 Live Demo
 
-- Hero section
-- Features section
-- Gallery section
-- Last “Thank You” page feel
-- Animated CTA buttons
+👉 https://gsap-product-landing-page.vercel.app
 
----
 
-## ▶️ Run this project locally
+
+
+## ⚙️ Installation & Run Locally
 
 ```bash
+# clone repo
+git clone your-repo-url
+
+# open folder
+cd gsap-product-landing-page
+
+# install dependencies
 npm install
+
+# start project
 npm run dev
 
+Project will run on:
 
-🧠 Key GSAP Concepts Used
+http://localhost:5173
+
+
+🎥 Animations Included
 ----
-gsap.from()
+Hero fade-in animation
 
-gsap.to()
+Section reveal on scroll
 
-scrollTrigger
+Button micro-interaction
 
-stagger animations
+Card hover zoom + glow
 
-parallax scroll
+Parallax effect
 
-prefers-reduced-motion
 
-cleanup of animations
+
+📚 Learning Outcomes
+----
+While building this project I learned:
+
+How GSAP works with React
+
+Creating ScrollTrigger animations
+
+Handling animation cleanup
+
+Designing UI with glass effect
+
+Creating multi-section landing pages
+
+Improving UX using micro-animations
+
+
+🚀 Future Improvements
+----
+⬜ Add real product gallery
+⬜ Add contact form
+⬜ Add responsive hamburger menu
+⬜ Add dark / light mode
+⬜ Add backend email integration
